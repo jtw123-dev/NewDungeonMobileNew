@@ -8,8 +8,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed = 1;
     [SerializeField] private float _jumpForce = 3;
     [SerializeField] private bool _isGrounded;
-    [SerializeField] private Animator _anim;
-    [SerializeField] private SpriteRenderer _renderer;
+    [SerializeField] private Animator _anim,_swordAnim;
+    [SerializeField] private SpriteRenderer _renderer,_swordRenderer;
     private bool _hasJumped;
     
     // Start is called before the first frame update
@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) &&IsGrounded())
         {
             _anim.SetTrigger("Attack");
+            _swordAnim.SetTrigger("SwordAnimation");
         }
         
     }
@@ -48,11 +49,22 @@ public class Player : MonoBehaviour
 
         if (translation > 0)
         {
-            _renderer.flipX = false; 
+            _renderer.flipX = false;
+            _swordRenderer.flipX = false;
+            _swordRenderer.flipY = false;
+
+            Vector3 newPos = _swordRenderer.transform.localPosition;
+            newPos.x = 1.01f;
+            _swordRenderer.transform.localPosition = newPos;
         }
         else if (translation < 0)
         {
             _renderer.flipX = true;
+            _swordRenderer.flipX = true;
+            _swordRenderer.flipY = true;
+            Vector3 newPos = _swordRenderer.transform.localPosition;
+            newPos.x = -1.01f;
+            _swordRenderer.transform.localPosition = newPos;
         }
 
         _body.velocity = new Vector2(translation, _body.velocity.y);
