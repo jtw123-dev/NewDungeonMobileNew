@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour,IDamagable
 {
+    public int diamonds;
     private Rigidbody2D _body;
+    [SerializeField] int _health;
     [SerializeField] private float _speed = 1;
     [SerializeField] private float _jumpForce = 3;
     [SerializeField] private bool _isGrounded;
     [SerializeField] private Animator _anim,_swordAnim;
     [SerializeField] private SpriteRenderer _renderer,_swordRenderer;
+    private bool _isDead;
+    
     private bool _hasJumped;
 
     public int Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
@@ -18,13 +22,19 @@ public class Player : MonoBehaviour,IDamagable
     void Start()
     {
         _body = GetComponent<Rigidbody2D>();
+        _health = 4;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_isDead==true)
+        {
+            return;
+        }
         Movement();
         Attack();
+        
     }
 
     private void Attack()
@@ -33,11 +43,9 @@ public class Player : MonoBehaviour,IDamagable
         {
             _anim.SetTrigger("Attack");
             _swordAnim.SetTrigger("SwordAnimation");
-        }
-        
+        }     
     }
-
-
+    
     private void Movement()
     {
         {
@@ -96,8 +104,23 @@ public class Player : MonoBehaviour,IDamagable
         }
     }
 
+    public void AddGems(int amount)
+    {
+        diamonds+=amount;
+        UIManager.Instance.UpdateGemCount(diamonds);
+    }
+
     public void Damage()
     {
+        _health--;
+        UIManager.Instance.UpdateLives(_health);
+
+        if (_health <= 0)
+        {
+            _isDead = true;
+            _anim.SetTrigger("Death");
+        }
+
         Debug.Log(" Player getting hit ");
     }
 }

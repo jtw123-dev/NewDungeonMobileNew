@@ -10,37 +10,35 @@ public class Skeleton : Enemy,IDamagable
     private void Start()
     {
         Health = health;
+         // diamond = GetComponent<Diamonds>();
+       // diamond = GameObject.Find("Diamond").GetComponent<Diamonds>();
+
     }
 
     public override void Update()
     {
-        base.Update();
-        Vector3 direction = player.transform.localPosition - transform.localPosition;
-        if (direction.x > 0 && animator.GetBool("InCombat") == true)
-        {
-            enemySprite.flipX = false;
-        }
-        else if (direction.x < 0 && animator.GetBool("InCombat") == true)
-        {
-            enemySprite.flipX = true;
-        }
+        base.Update();      
     }
 
     public void Damage()
     {
-      
 
-
+        if (isDead == true)
+        {
+            return;
+        }
         animator.SetTrigger("Hit");
         isHit = true;
         health--;
-        animator.SetBool("InCombat", true);
-
-       
+        animator.SetBool("InCombat", true);     
 
         if (health < 1)
         {
-            Destroy(gameObject);
+            isDead = true;
+            animator.SetTrigger("Death");
+            var diamondCopy = Instantiate(diamondPrefab, transform.position, Quaternion.identity);
+            diamondCopy.GetComponent<Diamonds>().gems = base.gemValue;
+           // Instantiate(diamondPrefab, transform.position, Quaternion.identity);
         }
     }
 }

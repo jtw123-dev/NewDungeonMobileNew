@@ -6,17 +6,26 @@ public abstract class Enemy : MonoBehaviour
 {
     [SerializeField]protected int health;
     [SerializeField]protected int speed;
-    [SerializeField]protected int gems;
+    [SerializeField]protected int gemValue;
     [SerializeField]protected Transform pointA,pointB;
     [SerializeField]protected SpriteRenderer enemySprite;
     [SerializeField]protected bool canSwitch;
     [SerializeField]protected Animator animator;
     [SerializeField]protected Vector3 currentTarget;
     [SerializeField]protected Transform player;
+    [SerializeField] protected GameObject diamondPrefab;
+    protected Diamonds diamond;
+    protected bool isDead = false;
     protected float distance; 
     protected bool isHit = false;
 
     //public init use to initialize components don't need because used serialized field to grab components
+
+    private void Start()
+    {
+      //  diamond = GetComponent<Diamonds>();
+       // diamond = GameObject.Find("Diamond").GetComponent<Diamonds>();
+    }
 
 
     public virtual void Update()
@@ -34,13 +43,26 @@ public abstract class Enemy : MonoBehaviour
             return;
         }
 
-        EnemyMovement();   
+        if (isDead==false)
+        {
+            EnemyMovement();
+        }
+
+       
     }
-    
     
     public virtual void EnemyMovement()
     {
-       
+        Vector3 direction = player.transform.localPosition - transform.localPosition;
+        if (direction.x > 0 && animator.GetBool("InCombat") == true)
+        {
+            enemySprite.flipX = false;
+        }
+        else if (direction.x < 0 && animator.GetBool("InCombat") == true)
+        {
+            enemySprite.flipX = true;
+        }
+
         if (transform.position == pointA.position)
         {
             currentTarget = pointB.position;
