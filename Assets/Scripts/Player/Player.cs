@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour,IDamagable
 {
@@ -39,7 +40,7 @@ public class Player : MonoBehaviour,IDamagable
 
     private void Attack()
     {
-        if (Input.GetMouseButtonDown(0) &&IsGrounded())
+        if (Input.GetMouseButtonDown(0) &&IsGrounded())//(CrossPlatformInputManager.GetButtonDown("Jump1") &&IsGrounded())
         {
             _anim.SetTrigger("Attack");
             _swordAnim.SetTrigger("SwordAnimation");
@@ -49,13 +50,13 @@ public class Player : MonoBehaviour,IDamagable
     private void Movement()
     {
         {
-            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            if ((Input.GetKeyDown(KeyCode.Space)||CrossPlatformInputManager.GetButtonDown("Jump")) && IsGrounded())
             {
                 _body.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
                 _anim.SetTrigger("Jump");
             }          
         }
-        float translation = Input.GetAxisRaw("Horizontal") * _speed;
+        float translation = CrossPlatformInputManager.GetAxisRaw("Horizontal")*_speed;// Input.GetAxisRaw("Horizontal") * _speed;
 
         if (translation > 0)
         {
