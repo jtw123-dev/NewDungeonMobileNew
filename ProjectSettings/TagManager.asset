@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - ShopKeeper
+  - DeathBox
   layers:
   - Default
   - TransparentFX

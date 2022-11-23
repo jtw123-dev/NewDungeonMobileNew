@@ -9,7 +9,6 @@ public class Spider : Enemy,IDamagable
 
     public void Damage()
     {
-
         if (isDead == true)
         {
             return;
@@ -22,7 +21,7 @@ public class Spider : Enemy,IDamagable
             isDead = true;
             animator.SetTrigger("Death");
             var diamondCopy = Instantiate(diamondPrefab, transform.position, Quaternion.identity);
-            diamondCopy.GetComponent<Diamonds>().gems = base.gemValue;
+            diamondCopy.GetComponent<Diamonds>().GemCount(base.gemValue);
         }
     }
 

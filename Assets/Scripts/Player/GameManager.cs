@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
-
     public bool HasKeyToCastle { get; set; }    
     private void Awake()
     {

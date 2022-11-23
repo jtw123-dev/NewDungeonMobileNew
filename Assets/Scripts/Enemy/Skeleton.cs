@@ -10,9 +10,6 @@ public class Skeleton : Enemy,IDamagable
     private void Start()
     {
         Health = health;
-         // diamond = GetComponent<Diamonds>();
-       // diamond = GameObject.Find("Diamond").GetComponent<Diamonds>();
-
     }
 
     public override void Update()
@@ -22,7 +19,6 @@ public class Skeleton : Enemy,IDamagable
 
     public void Damage()
     {
-
         if (isDead == true)
         {
             return;
@@ -37,8 +33,7 @@ public class Skeleton : Enemy,IDamagable
             isDead = true;
             animator.SetTrigger("Death");
             var diamondCopy = Instantiate(diamondPrefab, transform.position, Quaternion.identity);
-            diamondCopy.GetComponent<Diamonds>().gems = base.gemValue;
-           // Instantiate(diamondPrefab, transform.position, Quaternion.identity);
+            diamondCopy.GetComponent<Diamonds>().GemCount(base.gemValue);
         }
     }
 }

@@ -13,20 +13,11 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]protected Animator animator;
     [SerializeField]protected Vector3 currentTarget;
     [SerializeField]protected Transform player;
-    [SerializeField] protected GameObject diamondPrefab;
+    [SerializeField]protected GameObject diamondPrefab;
     protected Diamonds diamond;
     protected bool isDead = false;
     protected float distance; 
     protected bool isHit = false;
-
-    //public init use to initialize components don't need because used serialized field to grab components
-
-    private void Start()
-    {
-      //  diamond = GetComponent<Diamonds>();
-       // diamond = GameObject.Find("Diamond").GetComponent<Diamonds>();
-    }
-
 
     public virtual void Update()
     {
@@ -46,9 +37,7 @@ public abstract class Enemy : MonoBehaviour
         if (isDead==false)
         {
             EnemyMovement();
-        }
-
-       
+        }      
     }
     
     public virtual void EnemyMovement()
@@ -74,12 +63,10 @@ public abstract class Enemy : MonoBehaviour
             currentTarget = pointA.position;
             animator.Play("Idle");
             enemySprite.flipX = true;
-
         }
         if (isHit==false)
         {
             transform.position = Vector2.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
-        }
-      
+        }   
     }
 }

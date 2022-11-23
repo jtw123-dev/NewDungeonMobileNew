@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+//using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class UIManager : MonoBehaviour
 {
@@ -17,29 +18,32 @@ public class UIManager : MonoBehaviour
             return _instance;
         }
 }
-    public Text playerGemCountText;
-    public Image selectionImg;
-    public Text gemCountText;
+    [SerializeField] private Text _playerGemCountText;
+    [SerializeField] private Image _selectionImg;
+    [SerializeField] private Text _gemCountText;
     [SerializeField] private Image[] _healthBar;
-
+    private Player _player;
     private void Awake()
     {
         _instance = this;
     }
-
+    public void GemCountText()
+    {
+        _playerGemCountText.text = _player.diamonds.ToString(); 
+    }
     public void OpenShop(int gemCount)
     {
-        playerGemCountText.text = "" +gemCount + "G";
+        _playerGemCountText.text = "" +gemCount + "G";
     }
 
     public void UpdateSelection(int yPos)
     {
-        selectionImg.rectTransform.anchoredPosition = new Vector2(selectionImg.rectTransform.anchoredPosition.x, yPos);
+        _selectionImg.rectTransform.anchoredPosition = new Vector2(_selectionImg.rectTransform.anchoredPosition.x, yPos);
     }
 
     public void UpdateGemCount(int count)
     {
-        gemCountText.text = "" + count;
+        _gemCountText.text = "" + count;
     }
    
     public void UpdateLives(int livesRemaining)

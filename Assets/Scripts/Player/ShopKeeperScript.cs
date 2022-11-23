@@ -55,26 +55,22 @@ public class ShopKeeperScript : MonoBehaviour
                 break;
         }
     }
-
     public void BuyItem()
     {
         if (_player.diamonds<_itemCost)
 
         {
             _shopPanel.gameObject.SetActive(false);
-
         }
         else
         {
-
             if (_currentItemSelected == 2)
             {
                 GameManager.Instance.HasKeyToCastle = true; 
             }
-
             Debug.Log("You have enough money");
             _player.diamonds -= _itemCost;
-            UIManager.Instance.playerGemCountText.text = _player.diamonds.ToString();
+            UIManager.Instance.GemCountText();
         }
     }
 }

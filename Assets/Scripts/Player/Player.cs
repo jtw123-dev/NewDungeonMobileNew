@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour,IDamagable
@@ -13,9 +14,8 @@ public class Player : MonoBehaviour,IDamagable
     [SerializeField] private bool _isGrounded;
     [SerializeField] private Animator _anim,_swordAnim;
     [SerializeField] private SpriteRenderer _renderer,_swordRenderer;
+    [SerializeField] private Transform _startingPos;
     private bool _isDead;
-    
-    private bool _hasJumped;
 
     public int Health { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
@@ -35,12 +35,12 @@ public class Player : MonoBehaviour,IDamagable
         }
         Movement();
         Attack();
-        
+        ExitGame();       
     }
 
     private void Attack()
     {
-        if (Input.GetMouseButtonDown(0) &&IsGrounded())//(CrossPlatformInputManager.GetButtonDown("Jump1") &&IsGrounded())
+        if ( Input.GetMouseButtonDown(0) && IsGrounded())///(CrossPlatformInputManager.GetButtonDown("Jump1")
         {
             _anim.SetTrigger("Attack");
             _swordAnim.SetTrigger("SwordAnimation");
@@ -87,8 +87,25 @@ public class Player : MonoBehaviour,IDamagable
         else if (translation<=0)
         {
             _anim.SetFloat("Move", 0);
+        }     
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag=="DeathBox")
+        {
+            _anim.SetTrigger("Death");
+            StartCoroutine("RestartPlayer");
+            _isDead = true;
         }
-       
+    }
+
+    private IEnumerator RestartPlayer()
+    {
+        yield return new WaitForSeconds(2);
+        transform.position = _startingPos.position;
+        _isDead = false;
+        _anim.SetTrigger("Restart");
     }
 
     private bool IsGrounded()
@@ -120,8 +137,22 @@ public class Player : MonoBehaviour,IDamagable
         {
             _isDead = true;
             _anim.SetTrigger("Death");
+            StartCoroutine("RestartLevel");
         }
-
-        Debug.Log(" Player getting hit ");
     }
+    private void ExitGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }      
+    }
+
+    private IEnumerator RestartLevel()
+
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(1);
+    }
+
 }
